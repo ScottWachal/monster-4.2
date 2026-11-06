@@ -3,7 +3,7 @@ export type Monster = {
   name: string;
   hitPoints: number;
   level: number;
-  description?: string;
+  description?: string | null;
 };
 
 export type CreateMonsterInput = Omit<Monster, "id">;

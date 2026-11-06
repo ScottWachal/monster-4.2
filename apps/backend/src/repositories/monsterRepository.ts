@@ -1,49 +1,33 @@
-import { sampleMonsters } from "../data/sampleMonsters";
+import { prisma } from "../db/prisma";
 import type {
-  CreateMonsterInput,
   Monster,
+  CreateMonsterInput
 } from "../types/Monster";
 
-let monsters: Monster[] = sampleMonsters.map((monster) => ({
-  ...monster,
-}));
-
-let nextId =
-  Math.max(...monsters.map((monster) => monster.id), 0) + 1;
-
 export const monsterRepository = {
-  async getAll(): Promise<Monster[]> {
-    return monsters.map((monster) => ({
-      ...monster,
-    }));
+  getAll(): Promise<Monster[]> {
+    return prisma.monster.findMany({
+      orderBy: { id: "asc" }
+    });
   },
 
-  async getById(id: number): Promise<Monster | null> {
-    const monster = monsters.find(
-      (monster) => monster.id === id,
-    );
-
-    return monster ? { ...monster } : null;
+  getById(id: number): Promise<Monster | null> {
+    return prisma.monster.findUnique({
+      where: { id }
+    });
   },
 
-  async add(input: CreateMonsterInput): Promise<Monster> {
-    const monster: Monster = {
-      id: nextId++,
-      ...input,
-    };
-
-    monsters = [...monsters, monster];
-
-    return { ...monster };
+  add(input: CreateMonsterInput): Promise<Monster> {
+    return prisma.monster.create({
+      data: input
+    });
   },
 
   async remove(id: number): Promise<boolean> {
-    const originalLength = monsters.length;
+    const result = await prisma.monster.deleteMany({
+      where: { id }
+    });
 
-    monsters = monsters.filter(
-      (monster) => monster.id !== id,
-    );
-
-    return monsters.length < originalLength;
-  },
+    return result.count > 0;
+  }
 };
