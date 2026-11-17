@@ -13,6 +13,8 @@ dist/
 .env.local
 dist-ssr
 *.local
+.vercel/
+apps/backend/generated/
 
 .postman/
 postman/
