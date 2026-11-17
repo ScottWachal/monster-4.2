@@ -5,7 +5,8 @@
     "apps/*"
   ],
   "scripts": {
-    "dev": "concurrently \"npm run dev -w @monsters/frontend\" \"npm run dev -w @monsters/backend\""
+    "dev": "concurrently \"npm run dev -w @monsters/frontend\" \"npm run dev -w @monsters/backend\"",
+    "build": "npm run build -w @monsters/backend && npm run build -w @monsters/frontend"
   },
   "devDependencies": {
     "concurrently": "^10.0.6"
