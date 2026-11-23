@@ -3,11 +3,14 @@
   "version": "1.0.0",
   "private": true,
   "type": "module",
-  "scripts": {
+"scripts": {
     "dev": "tsx watch src/server.ts",
-    "build": "prisma generate --config prisma7.config.ts && prisma migrate deploy --config prisma7.config.ts",
     "db:seed": "prisma db seed --config prisma7.config.ts",
-    "db:reset": "prisma migrate reset --config prisma7.config.ts"
+    "db:reset": "prisma migrate reset --config prisma7.config.ts",
+    "postinstall": "prisma generate --config prisma7.config.ts",
+    "vercel-build": "prisma migrate deploy --config prisma7.config.ts && prisma db seed --config prisma7.config.ts && npm run build",
+    "build": "tsc",
+    "start": "node dist/server.js"
   },
   "dependencies": {
     "@prisma/adapter-pg": "^7.10.1",
